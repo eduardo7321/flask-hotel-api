@@ -15,27 +15,27 @@ Realizei esse projeto acompanhando o curso do professor Danilo Moreira na udemy,
 ### 1. Clonar o repositório
 
 ```bash
-`git clone https://github.com/seu-usuario/nome-do-repositorio.git`
-`cd nome-do-repositorio`
+git clone https://github.com/seu-usuario/nome-do-repositorio.git
+cd nome-do-repositorio
 ```
 
 ### 2. Criar e ativar um ambiente virtual
 
 ```bash
-`python virtualenv ambvir` #ambvir é o nome do ambiente virtual,fica ao seu critério
-`source venv/bin/activate`  # No Windows: venv\Scripts\activate` `
+python virtualenv ambvir #ambvir é o nome do ambiente virtual,fica ao seu critério
+source venv/bin/activate  # No Windows: venv\Scripts\activate` `
 ```
 
 ### 3. Instalar as dependências
 
 ```bash
-`pip install -r requirements.txt`
+pip install -r requirements.txt
 ```
 
 ### 4. Executar a aplicação
 
 ```bash
-`python app.py`
+python app.py
 ```
 
 ### 5. Testar a API
