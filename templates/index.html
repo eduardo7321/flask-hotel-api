@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Hotéis</title>
+    <script>
+        // Função para buscar os hotéis da API
+        async function carregarHoteis() {
+            const response = await fetch('/api/hoteis');  // Chama a API que retorna os hotéis
+            const data = await response.json();  // Converte a resposta para JSON
+
+            const listaHoteis = document.getElementById('lista-hoteis');
+            listaHoteis.innerHTML = '';  // Limpa a lista atual
+
+            data.hoteis.forEach(hotel => {
+                // Cria um item de lista para cada hotel
+                const li = document.createElement('li');
+                li.textContent = `${hotel.nome} - ${hotel.estrelas} estrelas - Cidade: ${hotel.cidade}`;
+                listaHoteis.appendChild(li);  // Adiciona o item à lista
+            });
+        }
+
+        // Chama a função quando a página for carregada
+        window.onload = carregarHoteis;
+    </script>
+</head>
+<body>
+    <h1>Hotéis Disponíveis</h1>
+    <ul id="lista-hoteis">
+        <!-- A lista será preenchida pelo JavaScript -->
+    </ul>
+</body>
+</html>
