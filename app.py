@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_restful import Api
 from resource.hotel import Hoteis, Hotel
 from resource.usuario import User, RegisterUser, UserLogin, UserLogout
@@ -25,12 +25,17 @@ def verifica_blacklist(self, token):
 def token_de_acesso_invalidado(jwt_header, jwt_payload):
     return jsonify({'message': 'You have been logged out'}), 401 # unauthorized
     
-api.add_resource(Hoteis, '/hoteis')
-api.add_resource(Hotel, '/hoteis/<int:hotel_id>')
-api.add_resource(User, '/usuarios/<int:user_id>')
-api.add_resource(RegisterUser, '/cadastro')
-api.add_resource(UserLogin, '/login')
-api.add_resource(UserLogout, '/logout')
+api.add_resource(Hoteis, '/api/hoteis')
+api.add_resource(Hotel, '/api/hoteis/<int:hotel_id>')
+api.add_resource(User, '/api/usuarios/<int:user_id>')
+api.add_resource(RegisterUser, '/api/cadastro')
+api.add_resource(UserLogin, '/api/login')
+api.add_resource(UserLogout, '/api/logout')
+
+# Rota para o template HTML
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     from sql_alchemy import banco
