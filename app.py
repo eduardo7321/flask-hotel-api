@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template
 from flask_restful import Api
 from resource.hotel import Hoteis, Hotel
+from resource.site import Sites, Site
 from resource.usuario import User, RegisterUser, UserLogin, UserLogout
 from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
@@ -31,6 +32,8 @@ api.add_resource(User, '/api/usuarios/<int:user_id>')
 api.add_resource(RegisterUser, '/api/cadastro')
 api.add_resource(UserLogin, '/api/login')
 api.add_resource(UserLogout, '/api/logout')
+api.add_resource(Sites, '/api/sites')
+api.add_resource(Site, '/api/sites/<string:url>')
 
 # Rota para o template HTML
 @app.route('/')

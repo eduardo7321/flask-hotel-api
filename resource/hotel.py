@@ -1,7 +1,9 @@
 from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
+from models.site import SiteModel
 from flask_jwt_extended import jwt_required
 import sqlite3
+# from resource.filtros import normalize_path_params
 
 #path /hoteis?cidade=Rio de Janeiro&estrelas_min=4&diaria_max=400
 path_params = reqparse.RequestParser()
@@ -13,31 +15,6 @@ path_params.add_argument('diaria_max', type=float)
 path_params.add_argument('limit', type=float)
 path_params.add_argument('offset', type=float)
 
-def normalize_path_params(cidade=None,
-                          estrelas_min = 0,
-                          estrelas_max = 5,
-                          diaria_min = 0,
-                          diaria_max = 10000,
-                          limit = 50,
-                          offset = 0, **dados):
-    if cidade:
-        return {
-            'estrelas_min': estrelas_min,
-            'estrelas_max': estrelas_max,
-            'diaria_min': diaria_min,
-            'diaria_max': diaria_max,
-            'cidade': cidade,
-            'limit': limit,
-            'offset': offset }
-    return {
-            'estrelas_min': estrelas_min,
-            'estrelas_max': estrelas_max,
-            'diaria_min': diaria_min,
-            'diaria_max': diaria_max,
-            'limit': limit,
-            'offset': offset
-        }
-
 class Hoteis(Resource):
     query_params = reqparse.RequestParser()
     query_params.add_argument("cidade", type=str, default="", location="args")
@@ -45,7 +22,7 @@ class Hoteis(Resource):
     query_params.add_argument("estrelas_max", type=float, default=0, location="args")
     query_params.add_argument("diaria_min", type=float, default=0, location="args")
     query_params.add_argument("diaria_max", type=float, default=0, location="args")
-    query_params.add_argument("limit", type=int, default=1, location="args")
+    query_params.add_argument("limit", type=int, default=10, location="args")
     query_params.add_argument("offset", type=float, default=0, location="args")
  
     def get(self):
@@ -110,6 +87,7 @@ class Hotel(Resource):
     argumentos.add_argument('estrelas', type=float, required=True, help="The fild 'estrelas' cannot be left blank ")
     argumentos.add_argument('diaria')
     argumentos.add_argument('cidade')
+    argumentos.add_argument('site_id', type=int, required=True, help="Every hotel needs to be linked with a sute.")
         
     def get(self, hotel_id):
         hotel = HotelModel.find_hotel(hotel_id)
@@ -124,6 +102,9 @@ class Hotel(Resource):
 
         dados = Hotel.argumentos.parse_args()
         hotel = HotelModel(hotel_id, **dados)
+
+        if not SiteModel.find_by_id(dados.get('site_id')):
+            return {'message': 'The hotel must be associated to a valid site.'}
         try:
             hotel.save_hotel()
         except:
